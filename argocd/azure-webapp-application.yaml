@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: azure-webapp
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/devSatym/azure-aks-gitops-observability.git
+    targetRevision: main
+    path: helm/azure-webapp
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
